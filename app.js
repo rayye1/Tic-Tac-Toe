@@ -1,26 +1,20 @@
 let moveAreas = Array.from(document.querySelectorAll('.square'))
 let squares = document.querySelectorAll('.square')
 let resetBtn = document.querySelector('#reset')
+let overScreen = document.querySelector('.game-over')
 let turn = true
 let gameOver = false
 
 
-const playerOne = (name) => {
-    marker = 'X';
+const playerFac = (marker) => {
     score = 0;
-    return {name, marker, score};
-}
-
-const playerTwo = (name) => {
-    marker = 'O';
-    score = 0;
-    return {name, marker, score};
+    return {marker, score};
 }
 
 
 function playerMove() {
-  let p1 = playerOne("dog")
-  let p2 = playerTwo("dog")
+  let p1 = playerFac("X")
+  let p2 = playerFac("O")
   if (turn) {
     turn = false
     return p1.marker
@@ -45,17 +39,20 @@ function checkWinner() {
   const tieCheck = (item) => item.textContent == 'X' || item.textContent == 'O'
   if (p1Wins()) {
     //Do Something
-    console.log('P1 Wins')
+    overScreen.style.display = 'grid';
+    overScreen.textContent = 'Player 1 Wins'
     gameOver = true
   }
   else if(p2Wins()) {
     //Do Something
-    console.log('P2 Wins')
+    overScreen.style.display = 'grid';
+    overScreen.textContent = 'Player 2 Wins'
     gameOver = true
   }
   else if (moveAreas.every(tieCheck)) {
     //Do Something
-    console.log('Its a tie')
+    overScreen.style.display = 'grid';
+    overScreen.textContent = "It's a Tie"
     gameOver = true
   }
 }
@@ -132,6 +129,8 @@ function clearBoard() {
     moveAreas[i].classList.remove('occupied')
   }
   gameOver = false
+  turn = true
+  overScreen.style.display = 'none'
 }
 
 resetBtn.addEventListener('click', clearBoard)
